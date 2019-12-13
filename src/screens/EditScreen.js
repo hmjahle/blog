@@ -1,20 +1,31 @@
-import React, {useContext } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useContext, useState } from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import { Context } from '../context/BlogContext';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
 
 const EditScreen = ({navigation}) => {
-    console.log(navigation.getParam('id'))
+    const {state} = useContext(Context);
+
+    const blogPost = state.find(
+        blogPost => blogPost.id === navigation.getParam('id')
+    );
+
+    const [title, setTitle] = useState(blogPost.title);
+    const [content, setContent] = useState(blogPost.content);
+
     return  ( 
     <View>
-        <Text>Edit Screen - {navigation.getParam('id')} </Text>
+        <Text>Edit Title:</Text>
+        <TextInput value={title} onChangeText={(newTitle) => setTitle(newTitle)}/>
+        <Text>Edit Content</Text>
+        <TextInput value={content} onChangeText={(newContent) => setContent(newContent)}/>
     </View>
     );
 };
-
+    
 
 const styles = StyleSheet.create({
-
+    
 });
 
 
