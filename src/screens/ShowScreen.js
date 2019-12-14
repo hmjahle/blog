@@ -5,7 +5,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const ShowScreen = ({navigation}) => {
     const {state } = useContext(Context);
-    console.log(navigation.getParam('id'))
     const blogPost = state.find(
         blogPost => blogPost.id === navigation.getParam('id')
         );
