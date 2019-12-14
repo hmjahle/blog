@@ -1,11 +1,15 @@
 import React, {useState, useReducer} from 'react';
 import createDataContext from './createDataContext';
-
+import jsonServer from '../api/jsonServer';
 
 
 const blogReducer = (state, action) => {
 
     switch (action.type) {
+        case 'get_blogposts': 
+            return action.payload;
+            // Her antar vi att payload inneholder all informasjonen vi har i appen vår
+            // Derfor vi ikke har [...state,  action.payload ]
         case 'edit_blogpost':
             return state.map((blogpost)=> {
                 return blogpost.id === action.payload.id ? action.payload : blogpost;
@@ -25,6 +29,15 @@ const blogReducer = (state, action) => {
             return state;
     }
 
+};
+
+const getBlogPosts = (dispatch) => {
+    return async () => {
+       const response = await jsonServer.get('/blogposts');
+       // response.data === [{},{},{}]
+       dispatch({type: 'get_blogposts', payload: response.data});
+       // Reducer is called when dispatch is called
+    };
 };
 
 const addBlogPost = (dispatch) => {
@@ -59,8 +72,9 @@ export const {Context, Provider } = createDataContext(
     {
         addBlogPost,
         deleteBlogPost,
-        editBlogPost
+        editBlogPost,
+        getBlogPosts
     }, 
-    [{title: 'Test Post', content: 'Test content', id: 1}]
+    []
 );
 
