@@ -31,11 +31,12 @@ const blogReducer = (state, action) => {
 
 };
 
-const getBlogPosts = (dispatch) => {
+const getBlogPosts = () => {
     return async () => {
-       const response = await jsonServer.get('/blogposts');
-       // response.data === [{},{},{}]
-       dispatch({type: 'get_blogposts', payload: response.data});
+       const response = await jsonServer.get('/blogposts/');
+      
+       // response === [{},{},{}]
+       dispatch({type: 'get_blogposts', payload: response});
        // Reducer is called when dispatch is called
     };
 };
