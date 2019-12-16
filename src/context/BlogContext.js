@@ -31,10 +31,9 @@ const blogReducer = (state, action) => {
 
 };
 
-const getBlogPosts = (dispatch) => {
+const getBlogPosts = dispatch => {
     return async () => {
        const response = await apiServer.get('/blogposts/');
-       console.log(response.data)
        // response.data === [{},{},{}]
        dispatch({type: 'get_blogposts', payload: response.data});
        // Reducer is called when dispatch is called
