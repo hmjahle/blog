@@ -1,6 +1,6 @@
 import React, {useState, useReducer} from 'react';
 import createDataContext from './createDataContext';
-import jsonServer from '../api/jsonServer';
+import apiServer from '../api/apiServer';
 
 
 const blogReducer = (state, action) => {
@@ -31,12 +31,12 @@ const blogReducer = (state, action) => {
 
 };
 
-const getBlogPosts = () => {
+const getBlogPosts = (dispatch) => {
     return async () => {
-       const response = await jsonServer.get('/blogposts/');
-      
-       // response === [{},{},{}]
-       dispatch({type: 'get_blogposts', payload: response});
+       const response = await apiServer.get('/blogposts/');
+       console.log(response.data)
+       // response.data === [{},{},{}]
+       dispatch({type: 'get_blogposts', payload: response.data});
        // Reducer is called when dispatch is called
     };
 };
