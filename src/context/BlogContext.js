@@ -16,15 +16,6 @@ const blogReducer = (state, action) => {
             });
         case 'delete_blogpost':
             return state.filter((blogpost) => blogpost.id !== action.payload);
-        case 'add_blogpost':
-            return [
-                ...state,
-                {
-                    id: Math.floor(Math.random()*9999),
-                    title: action.payload.title,
-                    content: action.payload.content
-                }
-            ];
         default:
             return state;
     }
@@ -35,14 +26,18 @@ const getBlogPosts = dispatch => {
     return async () => {
        const response = await apiServer.get('/blogposts/');
        // response.data === [{},{},{}]
+       console.log(response.status)
        dispatch({type: 'get_blogposts', payload: response.data});
        // Reducer is called when dispatch is called
     };
 };
 
 const addBlogPost = (dispatch) => {
-    return (title, content, callback) => {
-        dispatch({type: 'add_blogpost', payload: {title, content}});
+    return async (title, content, callback) => {
+        const response = await apiServer.post('/blogposts/', {
+                title: title,
+                content: content
+        });
         if (callback) {
             callback();
         }
@@ -50,13 +45,18 @@ const addBlogPost = (dispatch) => {
 };
 
 const deleteBlogPost = (dispatch) => {
-    return (id) => {
-        dispatch({type: 'delete_blogpost', payload: id})
+    return async id => {
+        const response =await apiServer.delete(`/blogposts/${id}/`);
+        dispatch({type: 'delete_blogpost', payload: id});
     }
 };
 
 const editBlogPost = (dispatch) => {
-    return (id, title, content, callback) => {
+    return async (id, title, content, callback) => {
+        const response = await apiServer.put(`/blogposts/${id}/`, {
+            title,
+            content
+        });
         dispatch({
             type: 'edit_blogpost',
             payload: {id, title, content}
